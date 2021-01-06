@@ -1,0 +1,101 @@
+{% extends "admin/master_layout.html" %}
+{% load static %}
+{% block main_content %}
+    <div class="mainInnerWrapper">
+        <div class="text-center cover-container">
+            <a href="#">
+                <img src="{% static "images\nodpimage.jpg" %}">
+            </a>
+            <h1 class="profile-name">{{ request.session.USER_NAME }}</h1>
+            <p class="user-text">sharing awesome ideas with your friends, you can grow, grow fast</p>
+        </div>
+        <!-- left content-->
+
+        <div class="leftMenuWrapper">
+              
+            <div class="profile-nav">
+
+                <div class="panel">
+
+                  <ul class="nav nav-pills nav-stacked">
+
+                      <li class="active"><a href="#"> <i class="fa fa-user"></i> Home</a></li>
+
+                      <!-- <li><a href="about.html"> <i class="fa fa-info-circle"></i> About</a></li> -->
+
+                      <li><a href="#"> <i class="fa fa-users"></i> Friends</a></li>
+
+                      <li><a href="#"> <i class="fa fa-user"></i> Profile</a></li>
+                      <li><a href="#"> <i class="fa fa-edit"></i> Edit profile</a></li>
+                        
+                  </ul>
+
+                </div>
+
+            </div>
+
+
+        </div><!-- end left content-->
+        <div class="">
+            <div class="FeedWrapper">
+                <form method="post" enctype="multipart/form-data" action="{% url 'upload_post' %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-xl-12 feedUploadInnerWrapper">
+                            <div class="form-group">
+                                {% for field in form_upload %}
+                                    <div class="">
+                                        <div class="form-group">
+                                            {{ field.label_tag }} {{ field }}
+                                            {{ field.errors }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <img id="showVideo" src="#" alt="your image" />
+                            <input type="submit" name="upload_button" id="upload_button" value="Post"/>
+                        </div>
+                    </div>
+                </form>
+                <!---user_feed-->
+                {% for post in user_posts %}
+                    <div class="post">
+                        <div class="post-heading">
+
+                            <div class="pull-left image floatLeft">
+
+                                <img src="{% static "images\nodpimage.jpg" %}" class="avatar" alt="user profile image">
+
+                            </div>
+
+                            <div class="pull-left meta">
+
+                                <div class="title h5">
+
+                                    <a href="#" class="post-user-name">{% if request.session.USER_ID == post.created_by_id %}You {% else %}{{post.created_by.user_first_name}}{%endif%}</a>
+
+                                     updated a  status.
+
+                                </div>
+
+                                <h6 class="text-muted time">{{post.description}}</h6>
+
+                            </div>
+
+                        </div>
+                        <div class="post-image"><img src={{post.image.url}}/></div>
+                        
+                        <div class="likeBtnWrapper">
+                            <div id="count_{{post.id}}" class="likeCountLabel">{{post.like_count}} </div>
+                            <button id="like_{{post.id}}" class="quick_like likeBtn{% if post.liked_by_id %} liked {% endif %} " data-url="{% url 'update_like' %}/{{post.id}}"><i class="fa fa-thumbs-o-up"></i></button>
+                        </div>
+                        
+                    </div>
+                {%endfor%}
+            </div>
+        </div>
+        <div class=""></div>
+    </div>
+{% endblock %}
+
+
