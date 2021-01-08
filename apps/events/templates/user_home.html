@@ -74,7 +74,7 @@
 
                                     <a href="#" class="post-user-name">{% if request.session.USER_ID == post.created_by_id %}You {% else %}{{post.created_by.user_first_name}}{%endif%}</a>
 
-                                     updated a  status.
+                                     added an event.
 
                                 </div>
 
@@ -87,7 +87,8 @@
                         
                         <div class="likeBtnWrapper">
                             <div id="count_{{post.id}}" class="likeCountLabel">{{post.like_count}} </div>
-                            <button id="like_{{post.id}}" class="quick_like likeBtn{% if post.liked_by_id %} liked {% endif %} " data-url="{% url 'update_like' %}/{{post.id}}"><i class="fa fa-thumbs-o-up"></i></button>
+                            <button id="like_{{post.id}}" class="quick_like likeBtn{% if post.liked_by_id %} liked {% endif %} "><i class="fa fa-thumbs-o-up"></i></button>
+                            <p>event is happening at  {{post.event_place}} from {{post.event_start_date}} to {{post.event_end_date}}</p>
                         </div>
                         
                     </div>

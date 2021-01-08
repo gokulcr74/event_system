@@ -11,5 +11,6 @@ class UserPost(models.Model):
     edit_date=models.DateTimeField(auto_now_add=True)
     event_start_date=models.DateTimeField()
     event_end_date=models.DateTimeField()
+    event_place=models.TextField(max_length=400,null=True)
     def __str__(self):
         return self.description

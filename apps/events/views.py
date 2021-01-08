@@ -6,7 +6,7 @@ from apps.events.models import UserPost
 from apps.events.forms import UploadForm
 
 def upload_post(request):
-    form_data=uploadForm(request.POST,request.FILES)
+    form_data=UploadForm(request.POST,request.FILES)
     if form_data.is_valid():
         upload_obj=form_data.save(commit=False)
         upload_obj.created_by_id=request.session['USER_ID']
