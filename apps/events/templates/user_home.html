@@ -22,12 +22,7 @@
                       <li class="active"><a href="#"> <i class="fa fa-user"></i> Home</a></li>
 
                       <!-- <li><a href="about.html"> <i class="fa fa-info-circle"></i> About</a></li> -->
-
-                      <li><a href="#"> <i class="fa fa-users"></i> Friends</a></li>
-
-                      <li><a href="#"> <i class="fa fa-user"></i> Profile</a></li>
-                      <li><a href="#"> <i class="fa fa-edit"></i> Edit profile</a></li>
-                        
+                      <li><a href="{% url 'stripe_account_creation' %}"> <i class="fa fa-edit"></i>Stripe payment</a></li> 
                   </ul>
 
                 </div>
@@ -53,7 +48,7 @@
                                 {% endfor %}
                             </div>
                             <img id="showVideo" src="#" alt="your image" />
-                            <input type="submit" name="upload_button" id="upload_button" value="Post"/>
+                            <input type="submit" name="upload_button" id="upload_button" value="Post" {% if not request.session.PAID_USER %} disabled {%endif%}/>
                         </div>
                     </div>
                 </form>
@@ -97,6 +92,15 @@
         </div>
         <div class=""></div>
     </div>
+    <input type="hidden" value={{request.session.PAID_USER}} id="paid"/>
+    <script>
+      $(document).ready(function(){
+  if($("#paid").val()=="False")
+  {
+      alert("please pay amount for posting events");
+  }
+});
+      </script>
 {% endblock %}
 
 

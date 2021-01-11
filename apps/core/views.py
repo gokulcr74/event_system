@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
+import stripe 
+
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth import authenticate
@@ -13,6 +15,9 @@ from django.contrib.auth import get_user_model
 from apps.core.forms import FormLogin,UserMasterForm,UserDetailForm
 from apps.core.models import Account,AccountDetail
 from apps.core.tokens import account_activation_token
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
 class Loginview(View):
 
     def get(self,request):
@@ -37,6 +42,8 @@ class Loginview(View):
                 try:
                    user_detail=AccountDetail.objects.get(account_id=user.id)
                    request.session['USER_ID']=user_detail.id
+                   request.session['PAID_USER']=user_detail.paid_user
+                   request.session['STRIPE_ID']=user_detail.stripe_id
                 except Exception as e:
                     return HttpResponse(e)
                 request.session['USER_NAME'] = user_detail.user_first_name
@@ -48,7 +55,7 @@ def signup(request):
     form_user_detail=UserDetailForm(request.POST or None)
     if form_user_master.is_valid() and form_user_detail.is_valid():
         account_obj = form_user_master.save(commit=False)
-        account_obj.is_active = False
+        account_obj.is_active = True
         account_obj.password_reset = True
         account_obj.type_of_user = 2
         account_obj.set_password(form_user_master.cleaned_data.get('password'))
@@ -56,7 +63,15 @@ def signup(request):
         account_detail_obj = form_user_detail.save(commit=False)
         account_detail_obj.account = account_obj
         account_detail_obj.save()
-        to_email=account_obj.email
+        to_email=account_obj.email#fetching email address for sending verification link
+        customer=stripe.Customer.create(
+        description="My First Test Customer (created for API docs)",
+        email=account_obj.email,
+        name= account_detail_obj.user_first_name
+        )
+        account_detail_obj.stripe_id=customer.id
+        account_detail_obj.save()
+        #creating contents for sending mail for account verifcation
         mail_subject = 'Welcome to '+settings.SITE_NAME+'!'
         mail_template ='email/acc_active_email.html'
         site_url1 = settings.SITE_URL
@@ -75,13 +90,17 @@ def signup(request):
             mail_subject, email_message, from_name, to=[to_email]
         )
         email.content_subtype = 'html'
-        email.send()
+        try:
+            email.send()#sending email for verification
+        except Exception as e:
+            return HttpResponse(e)
         messages.success(request, 'Please verify or email')
         return redirect('Renders Login Page')
     return render(request, 'add_user.html', {"form_user_master":form_user_master,"form_user_detail":form_user_detail})
 
 
 def activate(request, uidb64, token):
+    """Checking the validity of a link"""
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = Account.objects.get(pk=uid)

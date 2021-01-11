@@ -25,7 +25,7 @@ SECRET_KEY = '@t^0jg7bruri)@_x1e6+2_*hn^!@8wnjab+bjk+qyqr)mnji4s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['herokueventdemo.herokuapp.com']
 
 
 # Application definition
@@ -40,9 +40,11 @@ INSTALLED_APPS = [
     'apps.core',
     'apps.events',
     'apps.logout',
+    'apps.payment',
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -104,7 +106,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+STRIPE_SECRET_KEY = 'sk_test_51I7dp1CrEfaSRzhzIq7W1MkaPNAFBB39xdrH1MEG1Du8rCZ79bGPFu18WqpS5er6R9P7qmQvCyeEziRdIAczOWRi00usmuKZE0'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51I7dp1CrEfaSRzhzsmSeVwkasp9TQMqkIu8c6RkR1oEXyRCtkIp3y4zz1x18On8MPQADnSHR1sdHVEf9c7sRPhwC001RTx0q3d'
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -118,7 +121,9 @@ USE_L10N = True
 
 USE_TZ = True
 EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
 EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST_USER = 'test.event.sayonetech@gmail.com'
 EMAIL_HOST_PASSWORD = 'Test@123'
 EMAIL_PORT = 587
@@ -140,3 +145,6 @@ MEDIA_URL = '/media/'
 #import dj_database_url 
 #prod_db  =  dj_database_url.config(conn_max_age=500)
 #DATABASES['default'].update(prod_db)
+import dj_database_url 
+prod_db  =  dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(prod_db)

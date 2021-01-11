@@ -60,5 +60,7 @@ class AccountDetail(models.Model):
 	user_first_name         =models.CharField(max_length=30,null=True)
 	phone                   = models.CharField(max_length=30,null=True,blank=True)
 	address                 = models.TextField(null=True)
+	paid_user				= models.BooleanField(default=False)
+	stripe_id				= models.CharField(max_length=30,null=True)
 	def _str_(self):
 		return self.user_first_name
