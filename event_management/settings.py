@@ -144,6 +144,8 @@ MEDIA_ROOT =  os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 MEDIA_URL = '/media/'
 #STATICFILES_STORAGE = whitenoise.storage.CompressedManifestStaticFilesStorage
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = whitenoise.storage.CompressedManifestStaticFilesStorage
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 import dj_database_url 
 prod_db  =  dj_database_url.config(conn_max_age=500)
