@@ -13,7 +13,11 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+#production
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+#local
+#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -23,7 +27,7 @@ SECRET_KEY = '@t^0jg7bruri)@_x1e6+2_*hn^!@8wnjab+bjk+qyqr)mnji4s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','herokueventdemo.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1','herokuevent-v1.herokuapp.com']
 
 
 # Application definition

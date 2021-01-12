@@ -27,8 +27,8 @@ def charge(request): # new
             user_obj.save()
             request.session["PAID_USER"]=True
             return redirect('user_home')
-        except:
-            pass
+        except Exception as e:
+            return HttpResponse(e)
         
 
       

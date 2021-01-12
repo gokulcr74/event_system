@@ -739,20 +739,12 @@ footer {
 #page-footer{display: none;}
 .FeedWrapper{width: 700px; margin: 0 auto;}
 .FeedWrapper form textarea{resize: none;}
-.FeedWrapper .imageUploadBtn{display: none;}
+/* .FeedWrapper .imageUploadBtn{display: none;} */
 .FeedWrapper label{
-    width: 120px;
-    text-align: center;
-    margin: 0;
-    padding: 10px;
-    border-radius: 10px;
-    background: #00A9D7;
-    color: #fff;
-    font-size: 15px;
-    float: left;
-    cursor: pointer;
+    color: #1D2A35;
+    font-size: 16px;
 } 
-.FeedWrapper label:hover{
+.FeedWrapper label#upload_button:hover{
     background: #237DBA;
     border-color: #237DBA;
     color: #FFF; 
@@ -777,7 +769,6 @@ footer {
 }
 .FeedWrapper form{margin-top: 10px;}
 .feedUploadInnerWrapper{padding: 0;}
-label[for=id_description]{display: none}
 .navbarHeader{
     height: 60px;
     padding: 10px 100px;
