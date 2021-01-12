@@ -22,7 +22,7 @@ class UploadForm(forms.ModelForm):
         self.fields['event_end_date'].label = "event end date"
         self.fields['image'].widget.attrs.update({"id":"upload","class":"form-control","class":"imageUploadBtn" })
         self.fields['image'].required = True
-        self.fields['image'].label = ""
+        self.fields['image'].label = "Upload image"
     class Meta: 
         model =UserPost
         fields = ['description','event_place','event_start_date','event_end_date','image'] 
