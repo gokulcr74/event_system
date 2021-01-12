@@ -92,7 +92,7 @@ def signup(request):
         try:
             email.send()#sending email for verification
         except Exception as e:
-            return HttpResponse(e)
+            pass
         messages.success(request, 'Please verify or email')
         return redirect('Renders Login Page')
     return render(request, 'add_user.html', {"form_user_master":form_user_master,"form_user_detail":form_user_detail})

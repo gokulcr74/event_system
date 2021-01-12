@@ -135,11 +135,21 @@ AUTH_USER_MODEL = 'core.Account'
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
+#production_----------
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 MEDIA_ROOT =  os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media')
 MEDIA_URL = '/media/'
-#STATICFILES_STORAGE = whitenoise.storage.CompressedManifestStaticFilesStorage
+#-------------------
+#local------
+#STATIC_URL = '/static/'
+#STATIC_ROOT = '/static/'
+#STATICFILES_DIRS = (
+ #   os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static'),
+#)
+#MEDIA_ROOT =  os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media')
+#MEDIA_URL = '/media/'
+#---------
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 import dj_database_url 
