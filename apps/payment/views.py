@@ -1,9 +1,13 @@
 
 import stripe
-from django.shortcuts import render,redirect
+
 from django.conf import settings 
 from django.http import HttpResponse
+from django.shortcuts import render,redirect
+
 from apps.core.models import AccountDetail
+from apps.payment.models import StripePayment
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def index(request):
@@ -25,7 +29,14 @@ def charge(request): # new
             user_obj=AccountDetail.objects.get(id=request.session["USER_ID"])
             user_obj.paid_user=True
             user_obj.save()
-            request.session["PAID_USER"]=True
+            try:
+                pay_stripe=StripePayment(created_by=request.session["USER_ID"],
+                                         email=charge.email
+                                         )
+                pay_stripe.save()
+                request.session["PAID_USER"]=True
+            except:
+                pass
             return redirect('user_home')
         except Exception as e:
             return HttpResponse(e)

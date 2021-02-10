@@ -55,7 +55,7 @@ class Account(AbstractBaseUser):
 		return True
 
 class AccountDetail(models.Model):
-	account=models.ForeignKey(Account, on_delete=models.CASCADE)
+	account=models.ForeignKey(Account,related_name='emails', on_delete=models.CASCADE)
 	user_last_name =models.CharField(max_length=30,null=True)
 	user_first_name         =models.CharField(max_length=30,null=True)
 	phone                   = models.CharField(max_length=30,null=True,blank=True)

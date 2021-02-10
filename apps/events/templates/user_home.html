@@ -12,7 +12,7 @@
         <!-- left content-->
 
         <div class="leftMenuWrapper">
-              
+
             <div class="profile-nav">
 
                 <div class="panel">
@@ -22,7 +22,7 @@
                       <li class="active"><a href="#"> <i class="fa fa-user"></i> Home</a></li>
 
                       <!-- <li><a href="about.html"> <i class="fa fa-info-circle"></i> About</a></li> -->
-                      <li><a href="{% url 'stripe_account_creation' %}"> <i class="fa fa-edit"></i>Stripe payment</a></li> 
+                      <li><a href="{% url 'stripe_account_creation' %}"> <i class="fa fa-edit"></i>Stripe payment</a></li>
                   </ul>
 
                 </div>
@@ -33,7 +33,7 @@
         </div><!-- end left content-->
         <div class="">
             <div class="FeedWrapper">
-                <form method="post" enctype="multipart/form-data" action="{% url 'upload_post' %}">
+                <form method="post" enctype="multipart/form-data" action="{% url 'user_home' %}">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-xl-12 feedUploadInnerWrapper">
@@ -48,7 +48,7 @@
                                 {% endfor %}
                             </div>
                             <img id="showVideo" src="#" alt="your image" />
-                            <input type="submit" name="upload_button" id="upload_button" value="Post" {% if not request.session.PAID_USER %} disabled {%endif%}/>
+                            <input type="submit" name="upload_button" id="upload_button" value="Post"/>
                         </div>
                     </div>
                 </form>
@@ -79,13 +79,13 @@
 
                         </div>
                         <div class="post-image"><img src={{post.image.url}}/></div>
-                        
+
                         <div class="likeBtnWrapper">
                             <div id="count_{{post.id}}" class="likeCountLabel">{{post.like_count}} </div>
                             <button id="like_{{post.id}}" class="quick_like likeBtn{% if post.liked_by_id %} liked {% endif %} "><i class="fa fa-thumbs-o-up"></i></button>
                             <p>event is happening at  {{post.event_place}} from {{post.event_start_date}} to {{post.event_end_date}}</p>
                         </div>
-                        
+
                     </div>
                 {%endfor%}
             </div>
@@ -101,6 +101,27 @@
   }
 });
       </script>
+    {% if is_paginated %}
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
 {% endblock %}
 
 

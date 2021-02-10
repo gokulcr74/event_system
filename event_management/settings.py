@@ -14,10 +14,10 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 #production
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 #local
-#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -130,8 +130,8 @@ EMAIL_HOST_USER = 'test.event.sayonetech@gmail.com'
 EMAIL_HOST_PASSWORD = 'Test@123'
 EMAIL_PORT = 587
 EMAIL_FROM_NAME = 'Event_'
-SITE_URL="http://127.0.0.1:8000/"
-SITE_NAME="http://127.0.0.1:8000/"
+SITE_URL="https://herokuevent-v1.herokuapp.com/"
+SITE_NAME="https://herokuevent-v1.herokuapp.com/"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 AUTH_USER_MODEL = 'core.Account'
@@ -146,13 +146,13 @@ MEDIA_ROOT =  os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 MEDIA_URL = '/media/'
 #-------------------
 #local------
-#STATIC_URL = '/static/'
-#STATIC_ROOT = '/static/'
-#STATICFILES_DIRS = (
- #   os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static'),
-#)
-#MEDIA_ROOT =  os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media')
-#MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
+STATIC_ROOT = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static'),
+)
+MEDIA_ROOT =  os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media')
+MEDIA_URL = '/media/'
 #---------
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
