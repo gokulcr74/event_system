@@ -53,6 +53,8 @@
                     </div>
                 </form>
                 <!---user_feed-->
+               {% load el_pagination_tags %}
+                {% paginate 5 user_posts %}
                 {% for post in user_posts %}
                     <div class="post">
                         <div class="post-heading">
@@ -88,6 +90,7 @@
 
                     </div>
                 {%endfor%}
+            {% show_pages %}
             </div>
         </div>
         <div class=""></div>

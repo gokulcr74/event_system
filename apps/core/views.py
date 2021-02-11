@@ -22,6 +22,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class Loginview(View):
+    """ End point for login user """
 
     def get(self, request):
       form_login = FormLogin()
@@ -68,7 +69,7 @@ def signup(request):
         account_detail_obj = form_user_detail.save(commit=False)
         account_detail_obj.account = account_obj
         account_detail_obj.save()
-        to_email=account_obj.email  #fetching email address for sending verification link
+        to_email=account_obj.email  # fetching email address for sending verification link
         customer = stripe.Customer.create(
             description="My First Test Customer (created for API docs)",
             email=account_obj.email,
@@ -76,7 +77,7 @@ def signup(request):
             )
         account_detail_obj.stripe_id=customer.id
         account_detail_obj.save()
-        #creating contents for sending mail for account verifcation
+        # creating contents for sending mail for account verifcation
         mail_subject = 'Welcome to '+settings.SITE_NAME+'!'
         mail_template ='email/acc_active_email.html'
         site_url1 = settings.SITE_URL
@@ -102,7 +103,7 @@ def signup(request):
             pass
         messages.success(request, 'Please verify or email')
         return redirect('Renders Login Page')
-    return render(request, 'add_user.html', {
+    return render(request, 'add_customer.html', {
         "form_user_master":form_user_master,
         "form_user_detail":form_user_detail
         })

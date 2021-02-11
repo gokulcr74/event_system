@@ -1,7 +1,8 @@
 
 import stripe
 
-from django.conf import settings 
+from django.conf import settings
+from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
 
@@ -37,6 +38,7 @@ def charge(request): # new
                 request.session["PAID_USER"]=True
             except:
                 pass
+            messages.success(request, "Payment has been done. you can post now")
             return redirect('user_home')
         except Exception as e:
             return HttpResponse(e)
