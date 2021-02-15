@@ -741,16 +741,8 @@ footer {
 .FeedWrapper form textarea{resize: none;}
 .FeedWrapper .imageUploadBtn{display: none;}
 .FeedWrapper label{
-    width: 120px;
-    text-align: center;
-    margin: 0;
-    padding: 10px;
-    border-radius: 10px;
-    background: #00A9D7;
-    color: #fff;
-    font-size: 15px;
-    float: left;
-    cursor: pointer;
+    color: #1D2A35;
+
 } 
 .FeedWrapper label:hover{
     background: #237DBA;
