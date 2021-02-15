@@ -22,7 +22,9 @@
                       <li class="active"><a href="#"> <i class="fa fa-user"></i> Home</a></li>
 
                       <!-- <li><a href="about.html"> <i class="fa fa-info-circle"></i> About</a></li> -->
-                      <li><a href="{% url 'stripe_account_creation' %}"> <i class="fa fa-edit"></i>Stripe payment</a></li>
+                     {%   if not request.session.PAID_USER %}
+                      <li><a href="{% url 'stripe_account_creation' %}"> <i class="fa fa-edit"></i>payment</a></li>
+                  {% endif %}
                   </ul>
 
                 </div>
@@ -96,14 +98,51 @@
         <div class=""></div>
     </div>
     <input type="hidden" value={{request.session.PAID_USER}} id="paid"/>
+    <div class="container">
+  <!-- Trigger the modal with a button -->
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p id="message"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
     <script>
       $(document).ready(function(){
+          $("#message").html("Please do payment");
   if($("#paid").val()=="False")
   {
-      alert("please pay amount for posting events");
+      $("#myModal").modal();
   }
 });
       </script>
+     <script>
+        $("#upload_button").on('click',function(){
+             $("#message").html("Please upload an image");
+            if ($('#upload').get(0).files.length === 0)
+            {
+                 $("#myModal").modal();
+            }
+        });
+
+    </script>
     {% if is_paginated %}
   <ul class="pagination">
     {% if page_obj.has_previous %}
