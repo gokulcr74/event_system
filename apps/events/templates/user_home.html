@@ -135,10 +135,15 @@
       </script>
      <script>
         $("#upload_button").on('click',function(){
-             $("#message").html("Please upload an image");
+              if($("#paid").val()=="False") {
+                  $("#message").html("Please do payment for posting events");
+                  return false;
+              }
             if ($('#upload').get(0).files.length === 0)
             {
+                 $("#message").html("Please upload an image");
                  $("#myModal").modal();
+                 return false
             }
         });
 

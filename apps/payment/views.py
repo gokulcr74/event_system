@@ -35,9 +35,9 @@ def charge(request): # new
                                          email=charge.email
                                          )
                 pay_stripe.save()
-                request.session["PAID_USER"]=True
-            except:
+            except Exception as e:
                 pass
+            request.session["PAID_USER"]=True
             messages.success(request, "Payment has been done. you can post now")
             return redirect('user_home')
         except Exception as e:
