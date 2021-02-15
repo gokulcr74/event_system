@@ -6,11 +6,10 @@
             <a href="#">
                 <img src="{% static "images\nodpimage.jpg" %}">
             </a>
-            <h1 class="profile-name">{{ request.session.USER_NAME }}</h1>
+            <h1 class="profile-name">{{ request.user.user_name }}</h1>
             <p class="user-text">sharing awesome ideas with your friends, you can grow, grow fast</p>
         </div>
         <!-- left content-->
-
         <div class="leftMenuWrapper">
 
             <div class="profile-nav">
@@ -22,7 +21,7 @@
                       <li class="active"><a href="#"> <i class="fa fa-user"></i> Home</a></li>
 
                       <!-- <li><a href="about.html"> <i class="fa fa-info-circle"></i> About</a></li> -->
-                     {%   if not request.session.PAID_USER %}
+                     {%   if not request.user.paid_user %}
                       <li><a href="{% url 'stripe_account_creation' %}"> <i class="fa fa-edit"></i>payment</a></li>
                   {% endif %}
                   </ul>
@@ -97,7 +96,7 @@
         </div>
         <div class=""></div>
     </div>
-    <input type="hidden" value={{request.session.PAID_USER}} id="paid"/>
+    <input type="hidden" value={{request.user.paid_user}} id="paid"/>
     <div class="container">
   <!-- Trigger the modal with a button -->
 

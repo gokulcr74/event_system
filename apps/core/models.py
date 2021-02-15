@@ -38,6 +38,12 @@ class Account(AbstractBaseUser):
 	is_superuser			= models.BooleanField(default=False)
 	type_of_user            = models.SmallIntegerField(default=3)
 	password_reset			= models.BooleanField(default=False)
+	user_last_name = models.CharField(max_length=30, null=True)
+	user_first_name = models.CharField(max_length=30, null=True)
+	phone = models.CharField(max_length=30, null=True, blank=True)
+	address = models.TextField(null=True)
+	paid_user = models.BooleanField(default=False)
+	stripe_id = models.CharField(max_length=30, null=True)
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = []
 
@@ -54,13 +60,3 @@ class Account(AbstractBaseUser):
 	def has_module_perms(self, app_label):
 		return True
 
-class AccountDetail(models.Model):
-	account=models.ForeignKey(Account,related_name='emails', on_delete=models.CASCADE)
-	user_last_name =models.CharField(max_length=30,null=True)
-	user_first_name         =models.CharField(max_length=30,null=True)
-	phone                   = models.CharField(max_length=30,null=True,blank=True)
-	address                 = models.TextField(null=True)
-	paid_user				= models.BooleanField(default=False)
-	stripe_id				= models.CharField(max_length=30,null=True)
-	def _str_(self):
-		return self.user_first_name

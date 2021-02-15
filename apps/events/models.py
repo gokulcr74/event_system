@@ -2,11 +2,11 @@
 from django.db import models
 from django.conf import settings
 
-from apps.core.models import AccountDetail
+from apps.core.models import Account
 
 
 class UserPost(models.Model):
-    created_by = models.ForeignKey(AccountDetail,related_name='accounts',on_delete=models.CASCADE)
+    created_by = models.ForeignKey(Account,related_name='accounts',on_delete=models.CASCADE)
     image = models.ImageField(upload_to='media/',null=True,blank=True)
     description = models.TextField(max_length=400,null=True)
     status = models.SmallIntegerField(null=True)

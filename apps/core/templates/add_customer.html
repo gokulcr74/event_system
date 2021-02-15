@@ -41,7 +41,7 @@
                 {% endfor %}
             </div>
                 <div class="button-wrapper">
-                    {% if not request.session.USER_NAME %}
+                    {% if not request.user.user_name %}
                 <a href="{% url 'Renders Login Page' %}">
                     {%else%}
                     <a href="{% url 'user_home' %}">

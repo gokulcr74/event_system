@@ -4,7 +4,7 @@ import stripe
 from django.conf import settings
 from django.contrib import messages
 from django.core.mail import EmailMessage
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
@@ -14,8 +14,8 @@ from django.views import View
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
-from apps.core.forms import FormLogin, UserMasterForm, UserDetailForm
-from apps.core.models import Account, AccountDetail
+from apps.core.forms import FormLogin, UserMasterForm
+from apps.core.models import Account
 from apps.core.tokens import account_activation_token
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -43,48 +43,35 @@ class Loginview(View):
                 messages.error(request, 'Incorrect Username or Password')
                 return self.get(request)
             else:
-                request.session['USER_EMAIL'] = user.email
-                request.session['IS_SUPER_USER'] = user.is_superuser
-                try:
-                   user_detail=AccountDetail.objects.get(account_id=user.id)
-                   request.session['USER_ID']=user_detail.id
-                   request.session['PAID_USER']=user_detail.paid_user
-                   request.session['STRIPE_ID']=user_detail.stripe_id
-                except Exception as e:
-                    return HttpResponse(e)
-                request.session['USER_NAME'] = user_detail.user_first_name
+                login(request, user)
                 return redirect("user_home")
 
 
 def signup(request):
     form_user_master = UserMasterForm(request.POST or None)
-    form_user_detail = UserDetailForm(request.POST or None)
-    if form_user_master.is_valid() and form_user_detail.is_valid():
+    if form_user_master.is_valid():
         account_obj = form_user_master.save(commit=False)
         account_obj.is_active = True
         account_obj.password_reset = True
         account_obj.type_of_user = 2
         account_obj.set_password(form_user_master.cleaned_data.get('password'))
         account_obj.save()
-        account_detail_obj = form_user_detail.save(commit=False)
-        account_detail_obj.account = account_obj
-        account_detail_obj.save()
         to_email=account_obj.email  # fetching email address for sending verification link
         customer = stripe.Customer.create(
             description="My First Test Customer (created for API docs)",
             email=account_obj.email,
-            name= account_detail_obj.user_first_name
+            name= account_obj.user_first_name
             )
-        account_detail_obj.stripe_id=customer.id
-        account_detail_obj.save()
+        account_obj.stripe_id=customer.id
+        account_obj.save()
         # creating contents for sending mail for account verifcation
         mail_subject = 'Welcome to '+settings.SITE_NAME+'!'
         mail_template ='email/acc_active_email.html'
         site_url1 = settings.SITE_URL
         site_url1 = site_url1[:-1]
         mail_contents = {
-        'user': account_detail_obj.user_first_name+
-        ' '+account_detail_obj.user_last_name,
+        'user': account_obj.user_first_name+
+        ' '+account_obj.user_last_name,
         'uid': urlsafe_base64_encode(force_bytes(account_obj.pk)),
         'token': account_activation_token.make_token(account_obj),
         'site_url1': site_url1
@@ -105,7 +92,6 @@ def signup(request):
         return redirect('Renders Login Page')
     return render(request, 'add_customer.html', {
         "form_user_master":form_user_master,
-        "form_user_detail":form_user_detail
         })
 
 
@@ -124,7 +110,6 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.password_reset = False
         user.save()
-        request.session['username'] = user.email
         messages.success(request, 'Please login to continue')
         return redirect('Renders Login Page')
     else:

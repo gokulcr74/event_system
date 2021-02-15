@@ -6,4 +6,4 @@ from apps.events.models import UserPost
 @admin.register(UserPost)
 class AccountAdmin(admin.ModelAdmin):
     raw_id_fields = ['created_by']
-    search_fields = ['created_date','created_by__account__email']
+    search_fields = ['created_date','created_by__email']

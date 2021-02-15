@@ -1,8 +1,10 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
+from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
 
 def index(request):
+    logout(request)
     if request.session.get('USER_ID'):
         del(request.session['USER_ID'])
     if request.session.get('USER_NAME'):
