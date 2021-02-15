@@ -137,6 +137,7 @@
         $("#upload_button").on('click',function(){
               if($("#paid").val()=="False") {
                   $("#message").html("Please do payment for posting events");
+                   $("#myModal").modal();
                   return false;
               }
             if ($('#upload').get(0).files.length === 0)
