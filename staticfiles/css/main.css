@@ -739,7 +739,7 @@ footer {
 #page-footer{display: none;}
 .FeedWrapper{width: 700px; margin: 0 auto;}
 .FeedWrapper form textarea{resize: none;}
-.FeedWrapper .imageUploadBtn{display: none;}
+.FeedWrapper .imageUploadBtn{display: inline-block;}
 .FeedWrapper label{
     color: #1D2A35;
 
