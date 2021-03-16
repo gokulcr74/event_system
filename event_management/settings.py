@@ -14,10 +14,10 @@ from pathlib import Path
 from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 #production
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 #local
-#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -92,6 +92,7 @@ DATABASES = {
     }
 }
 
+from celery.schedules import crontab
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -143,19 +144,19 @@ AUTH_USER_MODEL = 'core.Account'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 #production_----------
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
-MEDIA_ROOT =  os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media')
-MEDIA_URL = '/media/'
-#-------------------
-#local------
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 #STATIC_URL = '/static/'
-#STATIC_ROOT = '/static/'
-#STATICFILES_DIRS = (
- #   os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static'),
-#)
 #MEDIA_ROOT =  os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media')
 #MEDIA_URL = '/media/'
+#-------------------
+#local------
+STATIC_URL = '/static/'
+STATIC_ROOT = '/static/'
+STATICFILES_DIRS = (
+   os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static'),
+)
+MEDIA_ROOT =  os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media')
+MEDIA_URL = '/media/'
 #---------
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -163,6 +164,7 @@ import dj_database_url
 prod_db  =  dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(prod_db)
 
+"""
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
 DEFAULT_FILE_STORAGE = config('DEFAULT_FILE_STORAGE')
@@ -170,4 +172,27 @@ AWS_DEFAULT_ACL = None
 AWS_STORAGE_BUCKET_NAME =  config('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME')
 AWS_S3_FILE_OVERWRITE =  config('AWS_S3_FILE_OVERWRITE',default=True, cast=bool)
+"""
 
+RABBITMQ_HOST = 'localhost'
+RABBITMQ_PORT = '5672'
+RABBITMQ_PASSWORD = 'Sayone@123'
+RABBITMQ_USER = 'gokul'
+RABBITMQ_VHOST = 'sample_host'
+
+
+
+CELERY_BROKER_URL = 'amqp://{}:{}@{}:{}/{}'.format(RABBITMQ_USER, RABBITMQ_PASSWORD, RABBITMQ_HOST, RABBITMQ_PORT,
+                                                   RABBITMQ_VHOST)
+
+CELERY_TASK_ALWAYS_EAGER = 'True'
+CELERY_TASK_ALWAYS_EAGER = True if CELERY_TASK_ALWAYS_EAGER == 'True' else False  # From os string can be retrieved
+
+CELERY_BEAT_SCHEDULE = {
+    'daily-horoscope-every-minute': {
+        'task': 'apps.core.tasks.send_daily_horoscope_notification',
+        'schedule': crontab(hour=19,
+                            minute=39,
+                            ),
+    },
+}

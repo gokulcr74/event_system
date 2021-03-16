@@ -1,4 +1,3 @@
-
 import stripe
 
 from django.conf import settings
@@ -9,10 +8,13 @@ from django.shortcuts import render,redirect
 from apps.core.models import Account
 from apps.payment.models import StripePayment
 
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
 
 def index(request):
 	return render(request, 'home.html')
+
 
 def charge(request): # new
     if request.method == 'POST':
@@ -41,6 +43,3 @@ def charge(request): # new
             return redirect('user_home')
         except Exception as e:
             return HttpResponse(e)
-        
-
-      
